@@ -1,2 +1,2 @@
-# TechDegree-project-3
+# Techdegree Project 3
  the third Tech Degree Project
