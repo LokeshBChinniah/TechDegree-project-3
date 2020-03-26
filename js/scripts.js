@@ -138,7 +138,7 @@ activities.addEventListener('change', (e) => {
 
 });
 
-/*Credit card is displayed as the default  payment method.
+/*Credit card is displayed as the default payment method.
 When one of the payment methods is selected, the other 2 are hidden*/
 
 selectPayment.hidden = true;
@@ -231,7 +231,7 @@ const ccNumvalidator = () => {
     const ccNumValue = creditCardNumber.value;
     const ccNumLabel = document.querySelector('label[for="cc-num"]');
 
-    if( creditCardOption.selected || paymentMethod.selected ){
+    if( creditCardOption.selected || selectPayment.selected ){
 
         if( /^\d{13,16}$/.test(ccNumValue)){
             creditCardNumber.style.border = '';
@@ -257,7 +257,7 @@ const ccZipValidator = () => {
     const ccZipValue = creditCardZip.value;
     const ccZipLabel = document.querySelector('label[for="zip"]');
 
-    if( creditCardOption.selected || paymentMethod.selected ){
+    if( creditCardOption.selected || selectPayment.selected ){
 
         if( /^\d{5}$/.test(ccZipValue)){
             creditCardZip.style.border = '';
@@ -285,7 +285,7 @@ const cvvValidator = () => {
     const cvvValue = creditCardCvv.value;
     const cvvLabel = document.querySelector('label[for="cvv"]');
 
-    if( creditCardOption.selected || paymentMethod.selected ){
+    if( creditCardOption.selected || selectPayment.selected ){
 
         if( /^\d{3}$/.test(cvvValue)){
             creditCardCvv.style.border = '';
