@@ -36,9 +36,9 @@ let totalCost = 0;
 const payment = document.querySelector('#payment');
 const selectPayment = document.querySelector('#payment option[value="select method"]');
 
-const creditcard = document.querySelector('#credit-card');
-const creditcardOption = document.querySelector('#payment option[value="credit card"]');
-const creditcardValue = document.querySelector('#payment option[value="credit card"]').getAttribute('value');
+const creditCard = document.querySelector('#credit-card');
+const creditCardOption = document.querySelector('#payment option[value="credit card"]');
+const creditCardValue = document.querySelector('#payment option[value="credit card"]').getAttribute('value');
 
 const paypal = document.querySelector('#paypal');
 const paypalOption = document.querySelector('#payment option[value="paypal"]');
@@ -103,8 +103,8 @@ designSelect.addEventListener('change', () => {
 
 });
 
-//user cannot select two activities that are at the same time
-//Total cost of select activities is calculated and displayed blow the list of activities
+/*user cannot select two activities that are at the same time
+Total cost of select activities is calculated and displayed blow the list of activities*/
 
 activities.addEventListener('change', (e) => {
 
@@ -147,19 +147,196 @@ bitcoin.style.display = 'none';
 
 payment.addEventListener('change', () => {
 
-    if( creditcardOption.selected ){
-        creditcard.style.display = 'block';
+    if( creditCardOption.selected ){
+        creditCard.style.display = 'block';
         paypal.style.display = 'none';
         bitcoin.style.display = 'none';
     } else if ( paypalOption.selected ) {
         paypal.style.display = 'block';
-        creditcard.style.display = 'none';
+        creditCard.style.display = 'none';
         bitcoin.style.display = 'none';
     } else if ( bitcoinOption.selected ){
         bitcoin.style.display = 'block';
-        creditcard.style.display = 'none';
+        creditCard.style.display = 'none';
         paypal.style.display = 'none';
     }
 
 });
 
+//validate required fields and add comments for errors in input
+
+const nameValidator = () => {
+
+    const nameValue = name.value;
+    let nameLabel = document.querySelector('label[for="name"]');
+    
+    if( /^\D+$/.test(nameValue) ){
+        name.style.border = '';
+        nameLabel.style.color = '';
+        nameLabel.textContent = "Name:";
+        return true;
+    } else {
+        name.style.border = "3px solid red";
+        nameLabel.style.color = "red";
+        nameLabel.innerHTML = "<strong>Please enter your name</strong>";
+        return false;
+    }
+    
+}
+
+const emailValidator = () => {
+
+    const emailValue = email.value;
+    const emailLabel = document.querySelector('label[for="mail"]');
+    
+    if( /^[^@]+@[^@.]+\.[a-z]+$/i.test(emailValue)){
+        email.style.border = '';
+        emailLabel.style.color = '';
+        emailLabel.textContent = "Email:";
+        return true;
+    } else {
+        email.style.border = "3px solid red";
+        emailLabel.style.color = "red";
+        emailLabel.innerHTML = "<strong>Please enter your email address</strong>";
+        return false;
+    }
+    
+}
+
+
+const activityValidator = () => {
+
+    const activityLegend = document.querySelector('.activities legend');
+    const checkboxes = document.querySelectorAll('.activities input');
+
+    for( let i = 0; i < checkboxes.length; i ++ ){
+        if(checkboxes[i].checked){
+            activityLegend.style.color = '';
+            activityLegend.textContent = "Register for Activities";
+            return true;
+        }
+    }
+
+    activityLegend.style.color = 'red';
+        activityLegend.innerHTML = "<strong>Please choose at least one activity</strong>"
+        return false;
+
+    
+}
+
+
+const ccNumvalidator = () => {
+
+    const creditCardNumber = document.querySelector('#cc-num');
+    const ccNumValue = creditCardNumber.value;
+    const ccNumLabel = document.querySelector('label[for="cc-num"]');
+
+    if( creditCardOption.selected || paymentMethod.selected ){
+
+        if( /^\d{13,16}$/.test(ccNumValue)){
+            creditCardNumber.style.border = '';
+            ccNumLabel.style.color = '';
+            ccNumLabel.textContent = "Card Number:";
+            return true;
+        } else {
+            creditCardNumber.style.border = '3px solid red';
+            ccNumLabel.style.color = 'red';
+            ccNumLabel.textContent = "Invalid Card Number";
+            return false;
+        }
+
+    } else {
+        return true;
+    }
+   
+}
+
+const ccZipValidator = () => {
+
+    const creditCardZip = document.querySelector('#zip');
+    const ccZipValue = creditCardZip.value;
+    const ccZipLabel = document.querySelector('label[for="zip"]');
+
+    if( creditCardOption.selected || paymentMethod.selected ){
+
+        if( /^\d{5}$/.test(ccZipValue)){
+            creditCardZip.style.border = '';
+            ccZipLabel.style.color = '';
+            ccZipLabel.textContent = "Zip Code:";
+            return true;
+        } else {
+            creditCardZip.style.border = '3px solid red';
+            ccZipLabel.style.color = 'red';
+            ccZipLabel.textContent = "Invalid Zip Code";
+            return false;
+        }
+    } else {
+
+        return true;
+
+    }
+
+    
+}
+
+const cvvValidator = () => {
+
+    const creditCardCvv = document.querySelector('#cvv');
+    const cvvValue = creditCardCvv.value;
+    const cvvLabel = document.querySelector('label[for="cvv"]');
+
+    if( creditCardOption.selected || paymentMethod.selected ){
+
+        if( /^\d{3}$/.test(cvvValue)){
+            creditCardCvv.style.border = '';
+            cvvLabel.style.color = '';
+            cvvLabel.textContent = "CVV:";
+            return true;
+        } else {
+            creditCardCvv.style.border = '3px solid red';
+            cvvLabel.style.color = 'red';
+            cvvLabel.textContent = "Invalid CVV";
+            return false;
+        }
+
+    } else {
+        return true;
+    }
+       
+}
+
+//
+
+form.addEventListener('submit', (e)=> {
+    
+    if( ! nameValidator() ){
+        e.preventDefault();
+    } 
+    
+    if( ! emailValidator() ){
+        e.preventDefault();
+    } 
+    
+    if( ! activityValidator() ){
+        e.preventDefault();
+    } 
+    
+    if( ! ccNumvalidator() ){
+        e.preventDefault();
+    } else {
+        return true;
+    }
+    
+    if( ! ccZipValidator() ){
+        e.preventDefault();
+    } else {
+        return true;
+    }
+    
+    if( ! cvvValidator() ){
+        e.preventDefault();
+    } else {
+        return true;
+    }
+
+});
