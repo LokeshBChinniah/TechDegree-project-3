@@ -34,7 +34,7 @@ let totalCost = 0;
 
 //payment variables
 const payment = document.querySelector('#payment');
-const paymentMethod = document.querySelector('#payment option[value="select method"]');
+const selectPayment = document.querySelector('#payment option[value="select method"]');
 
 const creditcard = document.querySelector('#credit-card');
 const creditcardOption = document.querySelector('#payment option[value="credit card"]');
@@ -69,6 +69,7 @@ selected, the 'color'  field says 'please select a theme*/
 designTheme.hidden = true;
 colorTheme.textContent = 'Please Select a t-shirt Theme';
 colorSelect.appendChild(colorTheme);
+colorTheme.selected = true;
 
 const colors = document.querySelectorAll('#color option');
 for ( let i = 0; i < colors.length; i ++ ){
@@ -101,3 +102,64 @@ designSelect.addEventListener('change', () => {
     }  
 
 });
+
+//user cannot select two activities that are at the same time
+//Total cost of select activities is calculated and displayed blow the list of activities
+
+activities.addEventListener('change', (e) => {
+
+    const inputClicked = event.target;
+    const inputAtt = inputClicked.getAttribute('data-cost');
+    const inputCost = parseInt(inputAtt);
+    
+    if( inputClicked.checked ){
+        totalCost += inputCost;
+    } else {
+        totalCost -= inputCost;
+    }
+    costMsg.innerHTML = "Total : $" + totalCost;
+
+    const dayAndTime = inputClicked.getAttribute('data-day-and-time');
+    const checkboxes = document.querySelectorAll('.activities input');
+
+    for ( let i = 0; i < checkboxes.length; i ++ ){
+
+        const currentCheckbox = checkboxes[i].getAttribute('data-day-and-time');
+
+        if( dayAndTime === currentCheckbox && inputClicked !== checkboxes[i] ){
+            if( inputClicked.checked ){
+                checkboxes[i].disabled = true;
+            } else {
+                checkboxes[i].disabled = false;
+            }
+        }
+
+    }
+
+});
+
+/*Credit card is displayed as the default  payment method.
+When one of the payment methods is selected, the other 2 are hidden*/
+
+selectPayment.hidden = true;
+paypal.style.display = 'none';
+bitcoin.style.display = 'none';
+
+payment.addEventListener('change', () => {
+
+    if( creditcardOption.selected ){
+        creditcard.style.display = 'block';
+        paypal.style.display = 'none';
+        bitcoin.style.display = 'none';
+    } else if ( paypalOption.selected ) {
+        paypal.style.display = 'block';
+        creditcard.style.display = 'none';
+        bitcoin.style.display = 'none';
+    } else if ( bitcoinOption.selected ){
+        bitcoin.style.display = 'block';
+        creditcard.style.display = 'none';
+        paypal.style.display = 'none';
+    }
+
+});
+
