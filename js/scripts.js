@@ -35,6 +35,7 @@ let totalCost = 0;
 //payment variables
 const payment = document.querySelector('#payment');
 const selectPayment = document.querySelector('#payment option[value="select method"]');
+const ccDefault = document.querySelector('#payment option[value="credit card"]');
 
 const creditCard = document.querySelector('#credit-card');
 const creditCardOption = document.querySelector('#payment option[value="credit card"]');
@@ -142,6 +143,7 @@ activities.addEventListener('change', (e) => {
 When one of the payment methods is selected, the other 2 are hidden*/
 
 selectPayment.hidden = true;
+ccDefault.selected = true;
 paypal.style.display = 'none';
 bitcoin.style.display = 'none';
 
@@ -231,7 +233,7 @@ const ccNumvalidator = () => {
     const ccNumValue = creditCardNumber.value;
     const ccNumLabel = document.querySelector('label[for="cc-num"]');
 
-    if( creditCardOption.selected || selectPayment.selected ){
+    if( creditCardOption.selected ){
 
         if( /^\d{13,16}$/.test(ccNumValue)){
             creditCardNumber.style.border = '';
@@ -257,7 +259,7 @@ const ccZipValidator = () => {
     const ccZipValue = creditCardZip.value;
     const ccZipLabel = document.querySelector('label[for="zip"]');
 
-    if( creditCardOption.selected || selectPayment.selected ){
+    if( creditCardOption.selected ){
 
         if( /^\d{5}$/.test(ccZipValue)){
             creditCardZip.style.border = '';
@@ -285,7 +287,7 @@ const cvvValidator = () => {
     const cvvValue = creditCardCvv.value;
     const cvvLabel = document.querySelector('label[for="cvv"]');
 
-    if( creditCardOption.selected || selectPayment.selected ){
+    if( creditCardOption.selected ){
 
         if( /^\d{3}$/.test(cvvValue)){
             creditCardCvv.style.border = '';
