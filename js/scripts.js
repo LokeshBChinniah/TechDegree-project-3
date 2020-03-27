@@ -325,20 +325,14 @@ form.addEventListener('submit', (e)=> {
     
     if( ! ccNumvalidator() ){
         e.preventDefault();
-    } else {
-        return true;
     }
     
     if( ! ccZipValidator() ){
         e.preventDefault();
-    } else {
-        return true;
     }
     
     if( ! cvvValidator() ){
         e.preventDefault();
-    } else {
-        return true;
     }
 
 });
